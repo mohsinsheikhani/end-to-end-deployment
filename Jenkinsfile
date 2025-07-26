@@ -1,6 +1,10 @@
 @Library('Shared') _
 pipeline {
     agent any
+
+    environment{
+        SONAR_HOME = tool "SonarQube"
+    }
     
     parameters {
         string(name: 'FRONTEND_DOCKER_TAG', defaultValue: '', description: 'Setting docker image for latest push')
@@ -43,6 +47,20 @@ pipeline {
             steps{
                 script{
                     owasp_dependency()
+                }
+            }
+        }
+        stage("SonarQube: Code Analysis"){
+            steps{
+                script{
+                    sonarqube_analysis("SonarQube","wanderlust","wanderlust")
+                }
+            }
+        }
+        stage("SonarQube: Code Quality Gates"){
+            steps{
+                script{
+                    sonarqube_code_quality()
                 }
             }
         }
