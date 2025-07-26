@@ -32,5 +32,12 @@ pipeline {
                 }
             }
         }
+        stage("Trivy: Filesystem scan"){
+            steps{
+                script{
+                    trivy_scan()
+                }
+            }
+        }
     }
 }
