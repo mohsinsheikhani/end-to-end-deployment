@@ -87,5 +87,18 @@ pipeline {
                 }
             }
         }
+        stage("Docker: Build Images"){
+            steps{
+                script{
+                        dir('backend'){
+                            docker_build("wanderlust-backend-beta","${params.BACKEND_DOCKER_TAG}","mohsinsheikhani")
+                        }
+                    
+                        dir('frontend'){
+                            docker_build("wanderlust-frontend-beta","${params.FRONTEND_DOCKER_TAG}","mohsinsheikhani")
+                        }
+                }
+            }
+        }
     }
 }
